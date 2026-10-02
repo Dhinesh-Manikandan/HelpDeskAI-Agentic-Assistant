@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ChevronDown, ChevronRight, Bot, Clock } from 'lucide-react';
+import { ChevronDown, ChevronRight, Bot } from 'lucide-react';
 
 export default function HistoryView() {
     const [tasks, setTasks] = useState<any[]>([]);

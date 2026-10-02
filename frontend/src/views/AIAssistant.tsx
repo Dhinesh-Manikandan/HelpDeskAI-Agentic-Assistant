@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Send, Terminal, Loader2, Sparkles, CheckCircle2, AlertCircle, RefreshCw, Bot, Settings } from 'lucide-react';
+import { Send, Loader2, Sparkles, CheckCircle2, AlertCircle, RefreshCw, Bot } from 'lucide-react';
 
 export default function AIAssistant() {
     const [request, setRequest] = useState('');
-    const [taskId, setTaskId] = useState<number | null>(null);
     const [executions, setExecutions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [chatHistory, setChatHistory] = useState<{ request: string, response: string, loading: boolean, executions: any[] }[]>([]);
