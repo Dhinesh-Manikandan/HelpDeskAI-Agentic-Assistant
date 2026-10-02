@@ -35,7 +35,6 @@ export default function AIAssistant() {
                 request: currentReq,
                 userId: "1"
             });
-            setTaskId(res.data.id);
             poll(res.data.id);
         } catch (e) {
             console.error(e);
