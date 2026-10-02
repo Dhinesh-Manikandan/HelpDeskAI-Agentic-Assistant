@@ -32,7 +32,7 @@ export default function AIAssistant() {
         setLoading(true);
         setExecutions([]);
         try {
-            const res = await axios.post('http://localhost:8080/api/agent/request', {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/agent/request`, {
                 request: currentReq,
                 userId: "1"
             });
@@ -53,7 +53,7 @@ export default function AIAssistant() {
         if (intervalRef.current) clearInterval(intervalRef.current);
         intervalRef.current = setInterval(async () => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/agent/tasks/${id}/executions`);
+                const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/agent/tasks/${id}/executions`);
                 setExecutions(res.data);
                 const last = res.data[res.data.length - 1];
 

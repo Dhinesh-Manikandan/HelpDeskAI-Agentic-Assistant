@@ -5,14 +5,14 @@ export default function ApprovalsView({ onResolve }: { onResolve?: () => void })
     const [approvals, setApprovals] = useState<any[]>([]);
 
     const fetchApprovals = async () => {
-        const res = await axios.get('http://localhost:8080/api/data/approvals');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/data/approvals`);
         setApprovals(res.data);
     };
 
     useEffect(() => { fetchApprovals(); }, []);
 
     const handleResolve = async (id: number, approved: boolean) => {
-        await axios.post(`http://localhost:8080/api/agent/approvals/${id}/resolve`, {
+        await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/agent/approvals/${id}/resolve`, {
             approved, approverId: 3 // ADMIN
         });
         fetchApprovals();

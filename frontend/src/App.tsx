@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     const checkApprovals = async () => {
       try {
-        const res = await axios.get('http://localhost:8080/api/data/approvals');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/data/approvals`);
         const pending = res.data.some((a: any) => a.status === 'PENDING');
         setHasPendingApprovals(pending);
       } catch (e) {

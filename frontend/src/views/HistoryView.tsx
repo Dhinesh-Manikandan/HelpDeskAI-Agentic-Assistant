@@ -8,7 +8,7 @@ export default function HistoryView() {
     const [executionsMap, setExecutionsMap] = useState<Record<number, any[]>>({});
 
     const fetchTasks = async () => {
-        const res = await axios.get('http://localhost:8080/api/agent/tasks');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/agent/tasks`);
         setTasks(res.data);
     };
 
@@ -23,7 +23,7 @@ export default function HistoryView() {
         }
         setExpanded(taskId);
         if (!executionsMap[taskId]) {
-            const res = await axios.get(`http://localhost:8080/api/agent/tasks/${taskId}/executions`);
+            const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/agent/tasks/${taskId}/executions`);
             setExecutionsMap(prev => ({ ...prev, [taskId]: res.data }));
         }
     };

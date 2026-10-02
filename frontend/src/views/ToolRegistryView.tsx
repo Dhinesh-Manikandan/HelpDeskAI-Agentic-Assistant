@@ -5,7 +5,7 @@ export default function ToolRegistryView() {
     const [tools, setTools] = useState<any[]>([]);
     
     useEffect(() => {
-        axios.get('http://localhost:8080/api/data/tools').then(res => setTools(res.data));
+        axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/data/tools`).then(res => setTools(res.data));
     }, []);
 
     return (
