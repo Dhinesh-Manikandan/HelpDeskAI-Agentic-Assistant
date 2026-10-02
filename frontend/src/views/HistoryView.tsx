@@ -34,11 +34,11 @@ export default function HistoryView() {
                 <h2 className="text-3xl font-bold mb-2">Execution History</h2>
                 <p className="text-slate-400">View past interactions and agent workflows.</p>
             </div>
-            <div className="glass-panel rounded-2xl flex-1 overflow-auto custom-scrollbar p-1 gradient-border">
-                <div className="bg-surface/80 rounded-xl min-h-full border border-slate-700/50 flex flex-col p-2 gap-2">
+            <div className="glass-panel rounded-2xl flex-1 flex flex-col overflow-hidden p-1 gradient-border">
+                <div className="bg-surface/80 rounded-xl flex-1 overflow-auto custom-scrollbar border border-slate-700/50 flex flex-col p-2 gap-2">
                     {tasks.length === 0 && <div className="text-center text-slate-500 p-8">No history found.</div>}
                     {tasks.slice().reverse().map((t: any) => (
-                        <div key={t.id} className="bg-slate-900/50 border border-slate-700/50 rounded-xl overflow-hidden transition-all duration-300">
+                        <div key={t.id} className="shrink-0 bg-slate-900/50 border border-slate-700/50 rounded-xl overflow-hidden transition-all duration-300">
                             <div 
                                 className="p-4 cursor-pointer hover:bg-slate-800/50 flex items-center gap-4 transition-colors"
                                 onClick={() => toggleExpand(t.id)}

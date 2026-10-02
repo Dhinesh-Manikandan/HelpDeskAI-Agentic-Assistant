@@ -55,8 +55,14 @@ public class AgentService {
             }
             
             if (selectedTool.equals("close_ticket")) {
-                if (ticket1042Closed) {
+                if (request.contains("1042") && ticket1042Closed) {
                     logState(task, AgentState.COMPLETED, selectedTool, "I checked the system and Ticket #1042 is already resolved. No further action is required.");
+                    task.setStatus("COMPLETED");
+                    taskRepo.save(task);
+                    return;
+                }
+                if (request.contains("1050") && ticket1050Closed) {
+                    logState(task, AgentState.COMPLETED, selectedTool, "I checked the system and Ticket #1050 is already resolved. No further action is required.");
                     task.setStatus("COMPLETED");
                     taskRepo.save(task);
                     return;
@@ -98,6 +104,8 @@ public class AgentService {
     
     // Simple state for demo purposes to reflect dynamic changes
     private boolean ticket1042Closed = false;
+    private boolean ticket1050Created = false;
+    private boolean ticket1050Closed = false;
 
     private void executeTool(AgentTask task, String toolName, User user) {
         logState(task, AgentState.EXECUTING, toolName, "Executing tool");
@@ -106,18 +114,41 @@ public class AgentService {
         String result = "I have successfully executed the requested tool: " + toolName + ". Let me know if you need anything else.";
         
         if (toolName.equals("create_ticket")) {
+            ticket1050Created = true;
             result = "I have created a high-priority ticket for your VPN issue. Your ticket number is #1050. Our IT support team has been notified and will reach out to you shortly.";
         }
         else if (toolName.equals("close_ticket")) {
-            ticket1042Closed = true;
-            result = "Ticket #1042 has been successfully closed. Please don't hesitate to reach out if you need any further assistance!";
+            String originalRequest = task.getUserRequest();
+            if (originalRequest != null && originalRequest.contains("1050")) {
+                ticket1050Closed = true;
+                result = "Ticket #1050 has been successfully closed. Please don't hesitate to reach out if you need any further assistance!";
+            } else {
+                ticket1042Closed = true;
+                result = "Ticket #1042 has been successfully closed. Please don't hesitate to reach out if you need any further assistance!";
+            }
         }
         else if (toolName.equals("get_my_tickets")) {
-            if (ticket1042Closed) {
-                result = "I found the following tickets under your account:\n\nOpen:\n(No open tickets)\n\nResolved:\n1) Ticket #1042: VPN not working\n2) Ticket #1021: Cannot access email\n\nIs there anything specific you would like me to do with these tickets?";
-            } else {
-                result = "I found the following tickets under your account:\n\nOpen:\n1) Ticket #1042: VPN not working\n\nResolved:\n1) Ticket #1021: Cannot access email\n\nIs there anything specific you would like me to do with these tickets?";
+            String openPart = "Open:\n";
+            int openCount = 1;
+            if (!ticket1042Closed) {
+                openPart += openCount++ + ") Ticket #1042: VPN not working\n";
             }
+            if (ticket1050Created && !ticket1050Closed) {
+                openPart += openCount++ + ") Ticket #1050: VPN issue\n";
+            }
+            if (openCount == 1) {
+                openPart += "(No open tickets)\n";
+            }
+            
+            String resolvedPart = "Resolved:\n1) Ticket #1021: Cannot access email\n";
+            if (ticket1042Closed) {
+                resolvedPart += "2) Ticket #1042: VPN not working\n";
+            }
+            if (ticket1050Closed) {
+                resolvedPart += (ticket1042Closed ? "3" : "2") + ") Ticket #1050: VPN issue\n";
+            }
+            
+            result = "I found the following tickets under your account:\n\n" + openPart + "\n" + resolvedPart + "\nIs there anything specific you would like me to do with these tickets?";
         }
         else if (toolName.equals("get_ticket_status")) {
             if (ticket1042Closed) {
