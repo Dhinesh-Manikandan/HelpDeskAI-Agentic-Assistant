@@ -2,15 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
 import AIAssistant from './views/AIAssistant';
-import ArchitectureView from './views/ArchitectureView';
-import WorkflowView from './views/WorkflowView';
-import DeploymentView from './views/DeploymentView';
-import SecurityView from './views/SecurityView';
-import MonitoringView from './views/MonitoringView';
+
 import HistoryView from './views/HistoryView';
 import ApprovalsView from './views/ApprovalsView';
 import ToolRegistryView from './views/ToolRegistryView';
-import { Bot, CheckSquare, Clock, Cpu, FileJson, LayoutDashboard, Settings, Shield, Terminal, Zap } from 'lucide-react';
+import { Bot, CheckSquare, Clock, Settings } from 'lucide-react';
 
 function App() {
   const [activeTab, setActiveTab] = useState('assistant');
